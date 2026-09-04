@@ -35,20 +35,35 @@ export function CardProvider({ children }) {
     setCards((prev) => [card, ...prev])
 
     if (isSupabaseConfigured()) {
-      await supabase.from('cards').insert({
-        id: card.id,
-        template_id: card.templateId,
-        full_name: card.fullName,
-        job_title: card.jobTitle,
-        company: card.company,
-        email: card.email,
-        phone: card.phone,
-        website: card.website,
-        address: card.address,
-        bio: card.bio,
-        avatar_url: card.avatarUrl,
-        socials: card.socials
-      }).select()
+      try {
+        const { data: authData, error: authError } = await supabase.auth.getUser()
+        if (authError) {
+          console.error('[Bkard] Failed to resolve Supabase user for card insert', authError)
+        }
+        const ownerId = authData?.user?.id
+        if (ownerId) {
+          const { error: insertError } = await supabase.from('cards').insert({
+            id: card.id,
+            owner_id: ownerId,
+            template_id: card.templateId,
+            full_name: card.fullName,
+            job_title: card.jobTitle,
+            company: card.company,
+            email: card.email,
+            phone: card.phone,
+            website: card.website,
+            address: card.address,
+            bio: card.bio,
+            avatar_url: card.avatarUrl,
+            socials: card.socials
+          }).select()
+          if (insertError) {
+            console.error('[Bkard] Failed to insert card into Supabase', insertError)
+          }
+        }
+      } catch (err) {
+        console.error('[Bkard] Failed to insert card into Supabase', err)
+      }
     }
 
     return card
