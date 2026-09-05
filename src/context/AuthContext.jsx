@@ -37,9 +37,6 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signup = useCallback(async ({ fullName, email, password, company, jobTitle }) => {
-    console.log('[Bkard diag] signup() started')
-    console.log('[Bkard diag] signup() isSupabaseConfigured()', isSupabaseConfigured())
-
     const record = {
       id: crypto.randomUUID(),
       fullName,
@@ -50,17 +47,12 @@ export function AuthProvider({ children }) {
     }
 
     if (isSupabaseConfigured()) {
-      console.log('[Bkard diag] signup() entering Supabase branch')
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: { data: { full_name: fullName } }
       })
-      console.log('[Bkard diag] signup() signUp() result', { data, error })
-      if (error) {
-        console.error('[Bkard diag] signup() signUp() error', error)
-        throw error
-      }
+      if (error) throw error
       if (data?.user) record.id = data.user.id
       await supabase.from('profiles').upsert({
         id: record.id,
