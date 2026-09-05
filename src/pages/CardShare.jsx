@@ -10,6 +10,27 @@ import { useToast } from '../hooks/useToast.js'
 import { downloadVCard } from '../lib/vcard.js'
 import { exportNodeAsPNG } from '../lib/exportImage.js'
 import { exportNodeAsPDF } from '../lib/exportPdf.js'
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient.js'
+
+function mapRowToCard(row) {
+  return {
+    id: row.id,
+    templateId: row.template_id,
+    fullName: row.full_name,
+    jobTitle: row.job_title,
+    company: row.company || '',
+    email: row.email || '',
+    phone: row.phone || '',
+    website: row.website || '',
+    address: row.address || '',
+    bio: row.bio || '',
+    avatarUrl: row.avatar_url || '',
+    socials: row.socials && typeof row.socials === 'object' ? row.socials : {},
+    views: row.views || 0,
+    connections: 0,
+    createdAt: row.created_at || new Date().toISOString()
+  }
+}
 
 export default function CardShare() {
   const { id } = useParams()
@@ -22,9 +43,51 @@ export default function CardShare() {
   const [paywallOpen, setPaywallOpen] = useState(false)
   const [busy, setBusy] = useState('')
   const [connected, setConnected] = useState(false)
+  const [publicCard, setPublicCard] = useState(null)
+  const [publicLoadDone, setPublicLoadDone] = useState(() => !isSupabaseConfigured())
 
-  const card = getCardById(id)
+  const localCard = getCardById(id)
+  const card = publicCard || localCard
   const viewedRef = useRef(false)
+
+  useEffect(() => {
+    if (!isSupabaseConfigured() || !id) {
+      setPublicLoadDone(true)
+      return undefined
+    }
+
+    let cancelled = false
+
+    async function loadPublicCard() {
+      try {
+        const { data, error } = await supabase
+          .from('cards')
+          .select('*')
+          .eq('id', id)
+          .eq('is_public', true)
+          .maybeSingle()
+
+        if (error) {
+          console.error('[Bkard] Failed to load public card from Supabase', error)
+        }
+
+        if (!cancelled) {
+          setPublicCard(data ? mapRowToCard(data) : null)
+        }
+      } catch (err) {
+        console.error('[Bkard] Failed to load public card from Supabase', err)
+        if (!cancelled) setPublicCard(null)
+      } finally {
+        if (!cancelled) setPublicLoadDone(true)
+      }
+    }
+
+    setPublicLoadDone(false)
+    loadPublicCard()
+    return () => {
+      cancelled = true
+    }
+  }, [id])
 
   useEffect(() => {
     if (card && !viewedRef.current) {
@@ -33,6 +96,10 @@ export default function CardShare() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [card?.id])
+
+  if (!publicLoadDone && !card) {
+    return null
+  }
 
   if (!card) {
     return (
