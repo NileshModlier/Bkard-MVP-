@@ -9,3 +9,8 @@ const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 export const supabase = url && anonKey ? createClient(url, anonKey) : null
 
 export const isSupabaseConfigured = () => Boolean(supabase)
+
+// TEMP diagnostics — remove after signup/auth investigation
+console.log('[Bkard diag] VITE_SUPABASE_URL', url)
+console.log('[Bkard diag] anon key exists', Boolean(anonKey))
+console.log('[Bkard diag] isSupabaseConfigured()', isSupabaseConfigured())
