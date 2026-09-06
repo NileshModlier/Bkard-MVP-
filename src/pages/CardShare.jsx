@@ -149,6 +149,16 @@ export default function CardShare() {
     toast.success('Contact saved as vCard')
   })
 
+  const handleCopyLink = async () => {
+    const url = `${window.location.origin}/cards/share/${card.id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('Link copied to clipboard')
+    } catch {
+      toast.error('Failed to copy link')
+    }
+  }
+
   const handleConnect = () => {
     setConnected(true)
     updateCard(card.id, { connections: (card.connections || 0) + 1 })
@@ -185,6 +195,7 @@ export default function CardShare() {
           <Button variant="outline" loading={busy === 'png'} onClick={handlePNG}>PNG</Button>
           <Button variant="outline" loading={busy === 'pdf'} onClick={handlePDF}>PDF</Button>
           <Button variant="outline" onClick={handleVCard}>vCard</Button>
+          <Button variant="outline" className="col-span-3" onClick={handleCopyLink}>Copy Link</Button>
         </div>
 
         {!isPremium && (
