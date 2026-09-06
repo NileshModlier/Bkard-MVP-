@@ -36,6 +36,7 @@ export default function AppRouter() {
 
       {/* Public card share page — no auth required so anyone can view/download */}
       <Route path="/cards/share/:id" element={<CardShare />} />
+      <Route path="/cards/:id/edit" element={<ProtectedRoute><Details /></ProtectedRoute>} />
 
       {/* Protected app */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

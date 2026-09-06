@@ -27,7 +27,8 @@ export const PATHS = {
   },
   CARDS: {
     LIST: '/cards',
-    SHARE: (id) => `/cards/share/${id}`
+    SHARE: (id) => `/cards/share/${id}`,
+    EDIT: (id) => `/cards/${id}/edit`
   },
   PAYMENT: '/payment',
   SETTINGS: '/settings'

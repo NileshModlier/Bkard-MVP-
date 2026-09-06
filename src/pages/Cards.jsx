@@ -37,7 +37,10 @@ export default function Cards() {
                 </Link>
                 <div className="flex items-center justify-between px-1">
                   <p className="text-xs text-dark/45">{c.views || 0} views · {c.connections || 0} connections</p>
-                  <button onClick={() => handleDelete(c.id)} className="text-xs font-semibold text-red-500 hover:underline">Delete</button>
+                  <div className="flex items-center gap-3">
+                    <Link to={`/cards/${c.id}/edit`} className="text-xs font-semibold text-primary hover:underline">Edit</Link>
+                    <button onClick={() => handleDelete(c.id)} className="text-xs font-semibold text-red-500 hover:underline">Delete</button>
+                  </div>
                 </div>
               </div>
             ))}
