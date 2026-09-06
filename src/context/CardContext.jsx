@@ -26,6 +26,24 @@ function mapRowToCard(row) {
   }
 }
 
+function mapCardUpdatesToRow(updates) {
+  const row = {}
+  if ('templateId' in updates) row.template_id = updates.templateId
+  if ('fullName' in updates) row.full_name = updates.fullName
+  if ('jobTitle' in updates) row.job_title = updates.jobTitle
+  if ('company' in updates) row.company = updates.company
+  if ('email' in updates) row.email = updates.email
+  if ('phone' in updates) row.phone = updates.phone
+  if ('website' in updates) row.website = updates.website
+  if ('address' in updates) row.address = updates.address
+  if ('bio' in updates) row.bio = updates.bio
+  if ('avatarUrl' in updates) row.avatar_url = updates.avatarUrl
+  if ('socials' in updates) row.socials = updates.socials
+  if ('views' in updates) row.views = updates.views
+  if ('isPublic' in updates) row.is_public = updates.isPublic
+  return row
+}
+
 export function CardProvider({ children }) {
   const { isAuthenticated, user, loading } = useAuth()
   const [cards, setCards] = useState(() => readJSON(STORAGE_KEYS.CARDS, []))
@@ -135,9 +153,22 @@ export function CardProvider({ children }) {
 
   const updateCard = useCallback((id, updates) => {
     setCards((prev) => prev.map((c) => (c.id === id ? { ...c, ...updates } : c)))
-    if (isSupabaseConfigured()) {
-      supabase.from('cards').update(updates).eq('id', id)
-    }
+
+    if (!isSupabaseConfigured()) return
+
+    const row = mapCardUpdatesToRow(updates)
+    if (Object.keys(row).length === 0) return
+
+    supabase
+      .from('cards')
+      .update(row)
+      .eq('id', id)
+      .then(({ error }) => {
+        if (error) console.error('[Bkard] Failed to update card in Supabase', error)
+      })
+      .catch((err) => {
+        console.error('[Bkard] Failed to update card in Supabase', err)
+      })
   }, [])
 
   const deleteCard = useCallback((id) => {
