@@ -159,6 +159,22 @@ export default function CardShare() {
     }
   }
 
+  const handleWhatsApp = () => {
+    const shareUrl =
+      `${window.location.origin}/cards/share/${card.id}`
+
+    const whatsappUrl =
+      `https://wa.me/?text=${encodeURIComponent(
+        `Check out my Bkard profile: ${shareUrl}`
+      )}`
+
+    window.open(
+      whatsappUrl,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
+
   const handleConnect = () => {
     setConnected(true)
     updateCard(card.id, { connections: (card.connections || 0) + 1 })
@@ -196,6 +212,7 @@ export default function CardShare() {
           <Button variant="outline" loading={busy === 'pdf'} onClick={handlePDF}>PDF</Button>
           <Button variant="outline" onClick={handleVCard}>vCard</Button>
           <Button variant="outline" className="col-span-3" onClick={handleCopyLink}>Copy Link</Button>
+          <Button variant="outline" className="col-span-3" onClick={handleWhatsApp}>WhatsApp</Button>
         </div>
 
         {!isPremium && (
