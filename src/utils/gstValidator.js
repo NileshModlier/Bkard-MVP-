@@ -17,3 +17,11 @@ export function isValidGstinShape(gstin) {
 export function normalizeGstin(gstin) {
   return typeof gstin === 'string' ? gstin.trim().toUpperCase() : ''
 }
+
+// GST Phase 1 Settings format check (not government verification).
+const GST_NUMBER_PATTERN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{3}$/
+
+export function isValidGstNumberFormat(gstin) {
+  if (typeof gstin !== 'string') return false
+  return GST_NUMBER_PATTERN.test(gstin.trim().toUpperCase())
+}

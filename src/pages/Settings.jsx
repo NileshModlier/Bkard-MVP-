@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DashboardLayout from '../components/layout/DashboardLayout.jsx'
 import Card from '../components/common/Card.jsx'
 import Input from '../components/common/Input.jsx'
 import Button from '../components/common/Button.jsx'
 import { useAuth } from '../hooks/useAuth.js'
 import { useToast } from '../hooks/useToast.js'
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient.js'
+import { isValidGstNumberFormat, normalizeGstin } from '../utils/gstValidator.js'
 
 const TABS = ['Profile', 'Company', 'Security', 'Billing']
+
+const GST_FINAL = new Set(['Verified', 'Rejected'])
 
 export default function Settings() {
   const { user, updateProfile, gstVerified } = useAuth()
@@ -18,11 +22,78 @@ export default function Settings() {
     jobTitle: user?.jobTitle || '',
     company: user?.company || ''
   })
+  const [gstNumber, setGstNumber] = useState('')
+  const [gstStatus, setGstStatus] = useState('Not submitted')
+  const [gstError, setGstError] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  const gstLocked = GST_FINAL.has(gstStatus)
 
   const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
 
-  const save = () => {
+  useEffect(() => {
+    if (!isSupabaseConfigured() || !user?.id) return undefined
+
+    let cancelled = false
+
+    async function loadGst() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('gst_number, gst_status')
+        .eq('id', user.id)
+        .maybeSingle()
+
+      if (cancelled || error || !data) return
+      setGstNumber(data.gst_number || '')
+      setGstStatus(data.gst_status || 'Not submitted')
+    }
+
+    loadGst()
+    return () => {
+      cancelled = true
+    }
+  }, [user?.id])
+
+  const save = async () => {
+    const gstTrimmed = gstNumber.trim()
+    setGstError('')
+
+    if (tab === 'Profile' && gstTrimmed && !gstLocked) {
+      if (!isValidGstNumberFormat(gstTrimmed)) {
+        setGstError('Enter a valid 15-character GSTIN')
+        return
+      }
+    }
+
     updateProfile(form)
+
+    if (tab === 'Profile' && gstTrimmed && !gstLocked) {
+      if (!isSupabaseConfigured() || !user?.id) {
+        toast.error('GST can only be saved when Supabase is configured')
+        toast.success('Settings saved')
+        return
+      }
+
+      setSaving(true)
+      const normalized = normalizeGstin(gstTrimmed)
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          gst_number: normalized,
+          gst_status: 'Pending Verification'
+        })
+        .eq('id', user.id)
+      setSaving(false)
+
+      if (error) {
+        toast.error(error.message || 'Failed to save GST number')
+        return
+      }
+
+      setGstNumber(normalized)
+      setGstStatus('Pending Verification')
+    }
+
     toast.success('Settings saved')
   }
 
@@ -53,6 +124,24 @@ export default function Settings() {
                 <Input label="Full name" value={form.fullName} onChange={update('fullName')} />
                 <Input label="Email" type="email" value={form.email} onChange={update('email')} />
                 <Input label="Job title" value={form.jobTitle} onChange={update('jobTitle')} />
+                <Input
+                  label="GST number"
+                  placeholder="22AAAAA0000A1Z5"
+                  value={gstNumber}
+                  onChange={(e) => {
+                    setGstNumber(e.target.value.toUpperCase())
+                    setGstError('')
+                  }}
+                  error={gstError}
+                  hint={gstLocked ? undefined : '15-character GSTIN. Status will be Pending Verification until reviewed.'}
+                  disabled={gstLocked}
+                />
+                <div className="flex items-center gap-2 rounded-xl bg-dark/5 px-4 py-3">
+                  <span className={`h-2 w-2 rounded-full ${
+                    gstStatus === 'Verified' ? 'bg-emerald-500' : gstStatus === 'Rejected' ? 'bg-red-500' : 'bg-accent'
+                  }`} />
+                  <p className="text-xs font-medium text-dark/60">GST status: {gstStatus}</p>
+                </div>
               </>
             ) : (
               <>
@@ -66,7 +155,7 @@ export default function Settings() {
               </>
             )}
             <div className="flex justify-end pt-2">
-              <Button onClick={save}>Save changes</Button>
+              <Button onClick={save} loading={saving}>Save changes</Button>
             </div>
           </Card>
         )}
