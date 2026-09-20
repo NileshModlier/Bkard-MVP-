@@ -21,6 +21,9 @@ function mapRowToCard(row) {
     avatarUrl: row.avatar_url || '',
     socials: row.socials && typeof row.socials === 'object' ? row.socials : {},
     views: row.views || 0,
+    qrScans: row.qr_scans || 0,
+    copyLinkClicks: row.copy_link_clicks || 0,
+    whatsappShares: row.whatsapp_shares || 0,
     connections: 0,
     createdAt: row.created_at || new Date().toISOString()
   }

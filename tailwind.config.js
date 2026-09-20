@@ -1,9 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        ink: '#1A1A1A',
         primary: {
           DEFAULT: '#3A86FF',
           50: '#EAF2FF',
@@ -30,8 +32,9 @@ export default {
           800: '#664C00',
           900: '#332600'
         },
-        dark: '#1A1A1A',
-        bg: '#F7F7F7'
+        dark: 'rgb(var(--bk-fg) / <alpha-value>)',
+        bg: 'rgb(var(--bk-bg) / <alpha-value>)',
+        surface: 'rgb(var(--bk-surface) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif']

@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom'
 import { useToast } from '../../hooks/useToast.js'
 
 const STYLES = {
-  info: 'bg-dark text-white',
+  info: 'bg-ink text-white',
   success: 'bg-emerald-600 text-white',
   error: 'bg-red-500 text-white',
   warning: 'bg-accent text-dark'

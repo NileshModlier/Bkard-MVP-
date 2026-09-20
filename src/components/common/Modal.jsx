@@ -1,3 +1,4 @@
+import { X } from 'lucide-react'
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -20,7 +21,7 @@ export default function Modal({ open, onClose, title, children, footer, size = '
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fade-in">
       <div className="absolute inset-0 bg-dark/50 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${sizes[size]} rounded-2xl bg-white p-6 shadow-2xl animate-scale-in`}>
+      <div className={`relative w-full ${sizes[size]} rounded-2xl bg-white p-6 shadow-2xl animate-scale-in dark:bg-surface`}>
         {title && (
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-bold text-dark">{title}</h3>
@@ -29,7 +30,7 @@ export default function Modal({ open, onClose, title, children, footer, size = '
               className="grid h-8 w-8 place-items-center rounded-full text-dark/50 transition hover:bg-dark/5 hover:text-dark"
               aria-label="Close"
             >
-              ✕
+              <X className="h-4 w-4" strokeWidth={2} />
             </button>
           </div>
         )}

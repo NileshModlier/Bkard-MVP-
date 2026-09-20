@@ -6,5 +6,6 @@ import { STORAGE_KEYS as BASE_STORAGE_KEYS } from '../lib/constants.js'
 
 export const STORAGE_KEYS = {
   ...BASE_STORAGE_KEYS,
-  DRAFT_CARD: 'bkard_card_draft'
+  DRAFT_CARD: 'bkard_card_draft',
+  THEME: 'bkard_theme'
 }

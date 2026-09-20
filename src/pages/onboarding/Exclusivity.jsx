@@ -5,7 +5,7 @@ export default function Exclusivity() {
   const navigate = useNavigate()
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-dark px-6 py-16">
+    <div className="flex min-h-screen items-center justify-center bg-ink px-6 py-16">
       <div className="w-full max-w-lg text-center animate-fade-in">
         <span className="mx-auto mb-8 grid h-16 w-16 place-items-center rounded-2xl bg-accent text-2xl font-black text-dark">B</span>
         <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl">

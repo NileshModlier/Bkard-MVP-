@@ -8,7 +8,7 @@ export default function PremiumBanner({ compact = false }) {
 
   if (isPremium) {
     return (
-      <div className={`flex items-center gap-3 rounded-2xl bg-dark px-5 ${compact ? 'py-3' : 'py-4'} text-white`}>
+      <div className={`flex items-center gap-3 rounded-2xl bg-ink px-5 ${compact ? 'py-3' : 'py-4'} text-white`}>
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-dark text-sm font-bold">★</span>
         <div className="min-w-0">
           <p className="text-sm font-semibold">Bkard Premium</p>

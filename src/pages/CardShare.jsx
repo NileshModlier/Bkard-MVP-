@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import BusinessCard from '../components/cards/BusinessCard.jsx'
 import QRGenerator from '../components/cards/QRGenerator.jsx'
 import Button from '../components/common/Button.jsx'
@@ -11,6 +11,7 @@ import { downloadVCard } from '../lib/vcard.js'
 import { exportNodeAsPNG } from '../lib/exportImage.js'
 import { exportNodeAsPDF } from '../lib/exportPdf.js'
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient.js'
+import { recordCardEvent } from '../lib/analytics.js'
 
 function mapRowToCard(row) {
   return {
@@ -27,6 +28,9 @@ function mapRowToCard(row) {
     avatarUrl: row.avatar_url || '',
     socials: row.socials && typeof row.socials === 'object' ? row.socials : {},
     views: row.views || 0,
+    qrScans: row.qr_scans || 0,
+    copyLinkClicks: row.copy_link_clicks || 0,
+    whatsappShares: row.whatsapp_shares || 0,
     connections: 0,
     createdAt: row.created_at || new Date().toISOString()
   }
@@ -34,6 +38,7 @@ function mapRowToCard(row) {
 
 export default function CardShare() {
   const { id } = useParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { getCardById, incrementView, updateCard } = useCards()
   const { canDownload, registerDownload, remaining, isPremium } = usePremium()
@@ -92,6 +97,8 @@ export default function CardShare() {
   useEffect(() => {
     if (card && !viewedRef.current) {
       incrementView(card.id)
+      const eventType = searchParams.get('src') === 'qr' ? 'qr_scan' : 'view'
+      recordCardEvent(card.id, eventType)
       viewedRef.current = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,6 +161,7 @@ export default function CardShare() {
     try {
       await navigator.clipboard.writeText(url)
       toast.success('Link copied to clipboard')
+      recordCardEvent(card.id, 'copy_link')
     } catch {
       toast.error('Failed to copy link')
     }
@@ -167,6 +175,8 @@ export default function CardShare() {
       `https://wa.me/?text=${encodeURIComponent(
         `Check out my Bkard profile: ${shareUrl}`
       )}`
+
+    recordCardEvent(card.id, 'whatsapp_share')
 
     window.open(
       whatsappUrl,

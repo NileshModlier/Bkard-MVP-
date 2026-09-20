@@ -1,7 +1,7 @@
 const VARIANTS = {
   primary: 'bg-primary text-white hover:bg-primary-600 shadow-sm hover:shadow-md focus:ring-primary-200',
   accent: 'bg-accent text-dark hover:bg-accent-600 shadow-sm hover:shadow-md focus:ring-accent-200',
-  dark: 'bg-dark text-white hover:bg-black shadow-sm hover:shadow-md focus:ring-dark/20',
+  dark: 'bg-ink text-white hover:bg-black shadow-sm hover:shadow-md focus:ring-dark/20 dark:bg-white dark:text-ink dark:hover:bg-slate-200',
   outline: 'bg-transparent text-dark border border-dark/15 hover:border-dark/30 hover:bg-dark/5 focus:ring-dark/10',
   ghost: 'bg-transparent text-dark hover:bg-dark/5 focus:ring-dark/10',
   danger: 'bg-red-500 text-white hover:bg-red-600 shadow-sm focus:ring-red-200'

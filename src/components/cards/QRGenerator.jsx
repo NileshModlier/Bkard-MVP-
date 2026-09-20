@@ -4,7 +4,7 @@ import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react'
 // Renders a scannable QR code that deep-links to the card's public share URL.
 export default function QRGenerator({ cardId, size = 160, fgColor = '#1A1A1A', showDownload = false }) {
   const canvasWrapRef = useRef(null)
-  const shareUrl = `${window.location.origin}/cards/share/${cardId}`
+  const shareUrl = `${window.location.origin}/cards/share/${cardId}?src=qr`
 
   const handleDownload = () => {
     const canvas = canvasWrapRef.current?.querySelector('canvas')

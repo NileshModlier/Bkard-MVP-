@@ -23,6 +23,7 @@ const Input = forwardRef(function Input(
             placeholder:text-dark/35
             transition-all duration-150
             focus:outline-none focus:ring-4 focus:ring-primary-100 focus:border-primary
+            dark:bg-white/5 dark:focus:ring-primary/20
             ${error ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-dark/10'}
             ${icon ? 'pl-10' : ''}
             ${textarea ? 'min-h-[110px] resize-y' : ''}

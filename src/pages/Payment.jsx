@@ -50,7 +50,7 @@ export default function Payment() {
         <p className="mt-1 text-sm text-dark/50">Unlock unlimited downloads and executive-grade features.</p>
 
         {isPremium ? (
-          <Card className="mt-6 flex items-center gap-4 bg-dark text-white" padding="p-6">
+          <Card className="mt-6 flex items-center gap-4 bg-ink text-white" padding="p-6">
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-accent text-xl font-bold text-dark">★</span>
             <div>
               <p className="font-bold">You're on Bkard Premium</p>

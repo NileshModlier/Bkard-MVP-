@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bk-fg: 26 26 26;
+  --bk-bg: 247 247 247;
+  --bk-surface: 255 255 255;
+}
+
+.dark {
+  --bk-fg: 241 245 249;
+  --bk-bg: 11 18 32;
+  --bk-surface: 21 29 46;
+}
+
 html, body { @apply bg-bg text-dark; }
 * { -webkit-tap-highlight-color: transparent; }
 
@@ -14,13 +26,19 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #b5b5b5; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
 @layer components {
   .shimmer-bg {
     background: linear-gradient(90deg, #eee 0%, #f5f5f5 20%, #eee 40%, #eee 100%);
     background-size: 1000px 100%;
   }
+  .dark .shimmer-bg {
+    background: linear-gradient(90deg, #1e293b 0%, #334155 20%, #1e293b 40%, #1e293b 100%);
+    background-size: 1000px 100%;
+  }
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+    @apply border border-white/40 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-white/10;
   }
 }
