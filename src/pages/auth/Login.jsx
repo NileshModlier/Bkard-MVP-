@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Input from '../../components/common/Input.jsx'
 import Button from '../../components/common/Button.jsx'
+import AuthShell from '../../components/branding/AuthShell.jsx'
 import { useAuth } from '../../hooks/useAuth.js'
 import { useToast } from '../../hooks/useToast.js'
 
@@ -14,7 +15,6 @@ export default function Login() {
   const { login, signup } = useAuth()
   const toast = useToast()
   const navigate = useNavigate()
-  const location = useLocation()
 
   const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
 
@@ -48,15 +48,14 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-6 py-12">
-      <div className="w-full max-w-md animate-fade-in">
-        <div className="mb-8 text-center">
-          <Link to="/onboarding/exclusivity" className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary text-lg font-black text-white">B</Link>
+    <AuthShell mode={mode}>
+      <div>
+        <div className="mb-8">
           <h1 className="text-2xl font-extrabold text-dark">{mode === 'login' ? 'Sign in to Bkard' : 'Create your account'}</h1>
           <p className="mt-1 text-sm text-dark/50">{mode === 'login' ? 'Access your executive identity' : 'Build your premium digital card'}</p>
         </div>
 
-        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-dark/5 bg-white p-6 shadow-card">
+        <form onSubmit={submit} className="glass space-y-4 rounded-2xl p-6 shadow-card">
           {mode === 'signup' && (
             <Input label="Full name" placeholder="Jordan Blake" value={form.fullName} onChange={update('fullName')} error={errors.fullName} />
           )}
@@ -77,6 +76,7 @@ export default function Login() {
         <p className="mt-6 text-center text-sm text-dark/50">
           {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
           <button
+            type="button"
             onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
             className="font-semibold text-primary hover:underline"
           >
@@ -84,6 +84,6 @@ export default function Login() {
           </button>
         </p>
       </div>
-    </div>
+    </AuthShell>
   )
 }
