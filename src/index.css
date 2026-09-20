@@ -6,12 +6,14 @@
   --bk-fg: 26 26 26;
   --bk-bg: 247 247 247;
   --bk-surface: 255 255 255;
+  color-scheme: light;
 }
 
 .dark {
   --bk-fg: 241 245 249;
   --bk-bg: 11 18 32;
   --bk-surface: 21 29 46;
+  color-scheme: dark;
 }
 
 html, body { @apply bg-bg text-dark; }

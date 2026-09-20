@@ -200,10 +200,10 @@ export default function CardShare() {
 
         <BusinessCard ref={cardRef} card={card} className="mx-auto" />
 
-        <div className="mt-6 flex items-center justify-between rounded-2xl border border-dark/5 bg-white p-4 shadow-card">
+        <div className="mt-6 flex items-center justify-between rounded-2xl border border-dark/10 bg-surface p-4 shadow-card">
           <div>
             <p className="text-sm font-bold text-dark">{card.fullName}</p>
-            <p className="text-xs text-dark/50">{card.jobTitle} {card.company && `· ${card.company}`}</p>
+            <p className="text-xs text-dark/70">{card.jobTitle} {card.company && `· ${card.company}`}</p>
           </div>
           <Button size="sm" onClick={handleConnect} disabled={connected}>
             {connected ? 'Requested ✓' : 'Connect'}
@@ -212,7 +212,7 @@ export default function CardShare() {
 
         {card.bio && <p className="mt-4 text-sm leading-relaxed text-dark/65">{card.bio}</p>}
 
-        <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-dark/5 bg-white p-6 shadow-card">
+        <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-dark/10 bg-surface p-6 shadow-card">
           <QRGenerator cardId={card.id} showDownload />
           <p className="text-center text-xs text-dark/45">Scan to save this card instantly</p>
         </div>

@@ -8,7 +8,7 @@ const Input = forwardRef(function Input(
   return (
     <div className={`w-full ${containerClassName}`}>
       {label && (
-        <label className="mb-1.5 block text-sm font-medium text-dark/80">{label}</label>
+        <label className="mb-1.5 block text-sm font-medium text-dark">{label}</label>
       )}
       <div className="relative">
         {icon && (
@@ -19,11 +19,11 @@ const Input = forwardRef(function Input(
         <Field
           ref={ref}
           className={`
-            w-full rounded-xl border bg-white px-4 py-3 text-sm text-dark
-            placeholder:text-dark/35
+            w-full rounded-xl border bg-surface px-4 py-3 text-sm text-dark
+            placeholder:text-dark/50
             transition-all duration-150
             focus:outline-none focus:ring-4 focus:ring-primary-100 focus:border-primary
-            dark:bg-white/5 dark:focus:ring-primary/20
+            dark:focus:ring-primary/20
             ${error ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-dark/10'}
             ${icon ? 'pl-10' : ''}
             ${textarea ? 'min-h-[110px] resize-y' : ''}
@@ -33,7 +33,7 @@ const Input = forwardRef(function Input(
         />
       </div>
       {error && <p className="mt-1.5 text-xs font-medium text-red-500">{error}</p>}
-      {!error && hint && <p className="mt-1.5 text-xs text-dark/45">{hint}</p>}
+      {!error && hint && <p className="mt-1.5 text-xs text-dark/60">{hint}</p>}
     </div>
   )
 })

@@ -43,7 +43,7 @@ export default function GstVerification() {
           <p className="mt-1 text-sm text-dark/50">Add your GSTIN to earn the executive verified badge</p>
         </div>
 
-        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-dark/5 bg-white p-6 shadow-card">
+        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-dark/10 bg-surface p-6 shadow-card">
           <Input
             label="GSTIN"
             placeholder="22AAAAA0000A1Z5"

@@ -22,11 +22,11 @@ export default function Verification() {
           every connection you make.
         </p>
 
-        <div className="mt-8 space-y-3 rounded-2xl border border-dark/5 bg-white p-5 text-left shadow-card">
+        <div className="mt-8 space-y-3 rounded-2xl border border-dark/10 bg-surface p-5 text-left shadow-card">
           {['Instant GST validation', 'Executive verified badge', 'Priority in discovery directory'].map((f) => (
             <div key={f} className="flex items-center gap-3">
-              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-600">✓</span>
-              <span className="text-sm text-dark/75">{f}</span>
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/15">✓</span>
+              <span className="text-sm text-dark">{f}</span>
             </div>
           ))}
         </div>

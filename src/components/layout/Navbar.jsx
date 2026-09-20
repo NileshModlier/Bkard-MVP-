@@ -56,7 +56,7 @@ export default function Navbar() {
               {menuOpen && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-                  <div className="glass absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-xl py-1.5 shadow-2xl animate-scale-in">
+                  <div className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-xl border border-dark/10 bg-white py-1.5 shadow-2xl animate-scale-in dark:bg-surface">
                     <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-4 py-2.5 text-sm text-dark/80 hover:bg-dark/5">
                       <LayoutDashboard className="h-4 w-4" />
                       Dashboard
